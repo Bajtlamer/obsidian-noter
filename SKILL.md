@@ -10,6 +10,13 @@ argument-hint: [source-path]
 
 Copy Markdown and plain text files into the Obsidian vault at `~/Obsidian-vault-01`, preserving folder structure. Source files are never deleted or modified.
 
+## Settings
+
+- **Vault path:** `~/Obsidian-vault-01`
+- **Target folder:** `90-Migrated`
+
+All migrated files are placed under the target folder inside the vault. For example, with the defaults above the destination root is `~/Obsidian-vault-01/90-Migrated/`. To change the subfolder, edit the value next to "Target folder" above.
+
 ## Rules
 
 1. **Only operate on Markdown and plain text files.** Accepted extensions: `.md`, `.markdown`, `.txt`, `.text`
@@ -42,7 +49,7 @@ For each accepted file:
 2. If the extension is `.txt`, `.text`, or `.markdown`:
    - Change the target extension to `.md`.
    - Review the content for basic Markdown formatting. Fix obvious issues (e.g., add blank lines before headings, ensure list markers are consistent). Do not alter the meaning or add new content.
-3. Determine the target path inside the vault (`~/Obsidian-vault-01`). When the source is a directory, use its basename (the last path component) as the top-level folder in the vault. For example, if the source is `~/test/folder`, the target root is `~/Obsidian-vault-01/folder/`. Preserve the internal folder structure relative to the source directory under that target root. When the source is a single file, place it directly in the vault root.
+3. Determine the target path inside the vault. The base destination is `<vault>/<target-folder>` (by default `~/Obsidian-vault-01/90-Migrated`). Read the current "Target folder" value from the Settings section above. When the source is a directory, use its basename (the last path component) as a subfolder under the target folder. For example, if the source is `~/test/folder`, the target root is `~/Obsidian-vault-01/90-Migrated/folder/`. Preserve the internal folder structure relative to the source directory under that target root. When the source is a single file, place it directly in the target folder.
 4. Check if the target path already exists. If so, ask the user before proceeding.
 5. Create any necessary parent directories in the vault.
 6. Write the file to the target location.

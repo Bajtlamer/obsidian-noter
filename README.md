@@ -48,19 +48,17 @@ A Claude Code skill that copies Markdown and plain text files into an Obsidian v
 
 ## Configuration
 
-Before using the skill, open `~/.claude/skills/obsidian-noter/SKILL.md` and update the vault path on this line:
+Before using the skill, open `~/.claude/skills/obsidian-noter/SKILL.md` and review the **Settings** section at the top:
 
 ```
-Copy Markdown and plain text files into the Obsidian vault at `~/Obsidian-vault-01`
+## Settings
+
+- **Vault path:** `~/Obsidian-vault-01`
+- **Target folder:** `90-Migrated`
 ```
 
-Replace `~/Obsidian-vault-01` with the actual path to your vault. For example:
-
-```
-~/Documents/MyVault
-```
-
-The same path also appears in the workflow section (Step 3). Update both occurrences so they match.
+- **Vault path:** Replace `~/Obsidian-vault-01` with the actual path to your vault (e.g. `~/Documents/MyVault`).
+- **Target folder:** The subfolder inside the vault where all migrated files are placed. The default is `90-Migrated`. Change it to any folder name that fits your vault structure (e.g. `Inbox`, `Import`, `99-Archive`).
 
 ---
 
@@ -123,7 +121,7 @@ Files that are skipped (images, PDFs, Office documents, HTML, and any other non-
 
 ## Behavior details
 
-- **The source directory becomes a folder in the vault.** If you copy `~/Downloads/project-docs`, the files land under `<vault>/project-docs/...`. The internal folder structure is preserved. For example, `~/Downloads/project-docs/notes/draft.txt` becomes `<vault>/project-docs/notes/draft.md`.
+- **Files are placed inside the target folder.** All migrated content goes into `<vault>/90-Migrated/` (or whatever value is configured in Settings). If you copy `~/Downloads/project-docs`, the files land under `<vault>/90-Migrated/project-docs/...`. The internal folder structure is preserved. For example, `~/Downloads/project-docs/notes/draft.txt` becomes `<vault>/90-Migrated/project-docs/notes/draft.md`.
 - **Source files are never modified or deleted.** This is a copy operation. The originals remain untouched.
 - **No content is invented.** When reformatting `.txt` or `.markdown` files, the skill only adjusts formatting, never alters meaning or adds new text.
 - **Conflicts require explicit confirmation.** The skill never silently overwrites an existing vault file.
