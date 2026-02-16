@@ -1,6 +1,6 @@
 # obsidian-noter
 
-A Claude Code skill that moves Markdown and plain text files into an Obsidian vault. It preserves the original folder structure, converts plain text files to properly formatted Markdown, and reports a summary of everything it processed.
+A Claude Code skill that copies Markdown and plain text files into an Obsidian vault. It preserves the original folder structure, converts plain text files to properly formatted Markdown, and reports a summary of everything it processed.
 
 ## Table of Contents
 
@@ -51,7 +51,7 @@ A Claude Code skill that moves Markdown and plain text files into an Obsidian va
 Before using the skill, open `~/.claude/skills/obsidian-noter/SKILL.md` and update the vault path on this line:
 
 ```
-Move Markdown and plain text files into the Obsidian vault at `~/Obsidian-vault-01`
+Copy Markdown and plain text files into the Obsidian vault at `~/Obsidian-vault-01`
 ```
 
 Replace `~/Obsidian-vault-01` with the actual path to your vault. For example:
@@ -72,13 +72,13 @@ Invoke the skill from Claude Code with a source path as the argument:
 /obsidian-noter [source-path]
 ```
 
-**Move a single file:**
+**Copy a single file:**
 
 ```
 /obsidian-noter ~/Downloads/meeting-notes.txt
 ```
 
-**Move an entire folder:**
+**Copy an entire folder:**
 
 ```
 /obsidian-noter ~/Downloads/project-docs
@@ -99,12 +99,11 @@ The `source-path` can be an absolute path or a path relative to your current wor
    - For `.txt`, `.text`, and `.markdown` files: renames them to `.md` and reviews the content for basic Markdown formatting issues (blank lines before headings, consistent list markers, etc.). It does not add new content or change meaning.
    - Determines the target path inside the vault, preserving the relative folder structure from the source.
    - Creates any missing parent directories in the vault.
-   - Writes the file to the vault.
-   - Removes the original file from the source location after a successful write.
+   - Writes the file to the vault. Source files are never modified or deleted.
 
 4. **Handles conflicts.** If a file with the same name already exists in the vault, the skill pauses and asks whether to skip, rename, or overwrite before continuing.
 
-5. **Reports a summary.** After all files are processed, it prints a summary of what was moved, renamed, and skipped.
+5. **Reports a summary.** After all files are processed, it prints a summary of what was copied, renamed, and skipped.
 
 ---
 
@@ -112,7 +111,7 @@ The `source-path` can be an absolute path or a path relative to your current wor
 
 | Extension | Action |
 |-----------|--------|
-| `.md` | Moved as-is |
+| `.md` | Copied as-is |
 | `.markdown` | Renamed to `.md`, formatting reviewed |
 | `.txt` | Renamed to `.md`, formatting reviewed |
 | `.text` | Renamed to `.md`, formatting reviewed |
@@ -124,8 +123,8 @@ Files that are skipped (images, PDFs, Office documents, HTML, and any other non-
 
 ## Behavior details
 
-- **Folder structure is preserved.** If you move `~/Downloads/project/notes/draft.txt`, the file lands at `<vault>/project/notes/draft.md`, not at the vault root.
-- **Original files are deleted after a successful move.** This is a move, not a copy. Verify your vault backup strategy before processing important files.
+- **The source directory becomes a folder in the vault.** If you copy `~/Downloads/project-docs`, the files land under `<vault>/project-docs/...`. The internal folder structure is preserved. For example, `~/Downloads/project-docs/notes/draft.txt` becomes `<vault>/project-docs/notes/draft.md`.
+- **Source files are never modified or deleted.** This is a copy operation. The originals remain untouched.
 - **No content is invented.** When reformatting `.txt` or `.markdown` files, the skill only adjusts formatting, never alters meaning or adds new text.
 - **Conflicts require explicit confirmation.** The skill never silently overwrites an existing vault file.
 
@@ -136,7 +135,7 @@ Files that are skipped (images, PDFs, Office documents, HTML, and any other non-
 After processing, the skill prints a table in this format:
 
 ```
-Moved:    X files
+Copied:    X files
 Renamed:  Y files (.txt/.text/.markdown -> .md)
 Skipped:  Z files (list filenames)
 ```
